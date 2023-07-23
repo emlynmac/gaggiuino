@@ -179,6 +179,8 @@ void lcdUploadCfg(eepromValues_t &eepromCurrentValues) {
   myNex.writeNum("sP.lc2.val", eepromCurrentValues.scalesF2);
   myNex.writeNum("sP.pump_zero.val", eepromCurrentValues.pumpFlowAtZero * 10000.f);
   myNex.writeNum("warmupState", eepromCurrentValues.warmupState);
+  myNex.writeNum("sP.h1.val", eepromCurrentValues.tankLed);
+  
 
   // Led
   myNex.writeNum("ledNum",
@@ -418,6 +420,7 @@ void lcdFetchSystem(eepromValues_t &settings) {
   settings.scalesF1                       = myNex.readNumber("sP.lc1.val");
   settings.scalesF2                       = myNex.readNumber("sP.lc2.val");
   settings.pumpFlowAtZero                 = myNex.readNumber("sP.pump_zero.val") / 10000.f;
+  settings.tankLed                        = myNex.readNumber("sP.h1.val");
 }
 
 void lcdFetchLed(eepromValues_t &settings) {
@@ -502,6 +505,10 @@ int lcdGetDescaleCycle(void) {
   return myNex.readNumber("j0.val");
 }
 
+int getTankLed(void){
+  return myNex.readNumber("sP.h1.val");
+}
+
 void lcdSetDescaleCycle(int cycle) {
   myNex.writeNum("j0.val", cycle);
 }
@@ -581,3 +588,4 @@ void trigger7(void) { lcdQuickProfileSwitch(); }
 void trigger8(void) { lcdSaveProfileTrigger(); }
 void trigger9(void) { lcdResetSettingsTrigger(); }
 void trigger10(void) { lcdLoadDefaultProfileTrigger(); }
+void trigger50(void) { lcdLedBrightnessTrigger(); }

@@ -91,6 +91,10 @@ void setup(void) {
   pumpInit(runningCfg.powerLineFrequency, runningCfg.pumpFlowAtZero);
   LOG_INFO("Pump init");
 
+  //Tank LED init
+  setTankLed(runningCfg.tankLed);
+  LOG_INFO("Tank LED init");
+
   pageValuesRefresh();
   LOG_INFO("Setup sequence finished");
 
@@ -495,6 +499,16 @@ void lcdQuickProfileSwitch(void) {
   lcdSwitchActiveToStoredProfile(eepromGetCurrentValues());
   lcdShowPopup("Profile switched!");
 }
+
+void lcdLedBrightnessTrigger(void) {
+  uint8_t newTankLed = getTankLed();
+  setTankLed(newTankLed);
+}
+
+void setTankLed(uint8_t newTankLed) {
+  analogWrite(ledPin, newTankLed);
+}
+
 
 //#############################################################################################
 //###############################____PROFILING_CONTROL____#####################################

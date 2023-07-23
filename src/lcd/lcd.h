@@ -28,6 +28,7 @@ enum class NextionPage: byte {
 
 extern volatile NextionPage lcdCurrentPageId;
 extern volatile NextionPage lcdLastCurrentPageId;
+extern volatile int newTankLed;
 
 void lcdInit(void);
 bool lcdCheckSerialInit(const char* expectedOutput, size_t expectedLen);
@@ -48,6 +49,7 @@ int lcdGetHomeScreenScalesEnabled(void);
 int lcdGetSelectedOperationalMode(void);
 int lcdGetManualFlowVol(void);
 int lcdGetDescaleCycle(void);
+int getTankLed(void);
 
 void lcdSetDescaleCycle(int cycle);
 void lcdSetPressure(float val);
@@ -77,5 +79,6 @@ void lcdQuickProfileSwitch(void);
 void lcdSaveProfileTrigger(void);
 void lcdResetSettingsTrigger(void);
 void lcdLoadDefaultProfileTrigger(void);
+void lcdLedBrightnessTrigger(void);
 
 #endif

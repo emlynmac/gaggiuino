@@ -110,6 +110,7 @@ namespace {
     defaultData.ledR = 9;
     defaultData.ledG = 0;
     defaultData.ledB = 9;
+    defaultData.ledW = 2;
 
     return defaultData;
   }

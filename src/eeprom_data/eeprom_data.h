@@ -120,6 +120,7 @@ struct eepromValues_t {
   float    pumpFlowAtZero;
   bool     ledState;
   bool     ledDisco;
+  uint8_t  ledW;
   uint8_t  ledR;
   uint8_t  ledG;
   uint8_t  ledB;

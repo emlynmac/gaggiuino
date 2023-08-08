@@ -62,7 +62,7 @@ void setup(void) {
 
   // Initialize LED
   led.begin();
-  led.setColor(9u, 0u, 9u); // WHITE
+  led.setColor(9u, 0u, 9u, 0u); // WHITE
   // Init the tof sensor
   tof.init(currentState);
 
@@ -99,7 +99,7 @@ void setup(void) {
   LOG_INFO("Setup sequence finished");
 
   // Change LED colour on setup exit.
-  led.setColor(9u, 0u, 9u); // 64171
+  led.setColor(9u, 0u, 9u, 0u); // 64171
 
   iwdcInit();
 }
@@ -994,7 +994,7 @@ static void doLed(void) {
         led.setDisco(led.DESCALE);
         break;
       default:
-        led.setColor(0, 0, 0);
+        led.setColor(0, 0, 0, 0);
         break;
     }
   } else {
@@ -1006,7 +1006,7 @@ static void doLed(void) {
           lcdFetchLed(runningCfg);
         }
       default: // intentionally fall through
-        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB);
+        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB, runningCfg.ledW);
     }
   }
 }

@@ -429,7 +429,7 @@ void lcdFetchSystem(eepromValues_t &settings) {
 void lcdFetchLed(eepromValues_t &settings) {
   // Led Settings
   uint32_t ledNum = myNex.readNumber("ledNum");
-  lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledR, settings.ledG, settings.ledB);
+  lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledW, settings.ledR, settings.ledG, settings.ledB);
 }
 
 void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile) {

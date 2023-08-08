@@ -102,7 +102,7 @@ void LED::setDisco(uint32_t increment) {
         static uint8_t val = 0;
         // val<<3 adjusts from 5 bit quantity to 8 bit for the library
         if(val % 2 == 0) {
-          setColor(255, 255, 255, 63);
+          setColor(255, 255, 255, 252);
         } else {
           setColor(0, 0, 0, 0);
         }

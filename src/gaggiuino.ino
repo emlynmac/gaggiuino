@@ -801,7 +801,7 @@ static bool sysReadinessCheck(void) {
   if ((lcdCurrentPageId != NextionPage::BrewGraph || lcdCurrentPageId != NextionPage::BrewManual)
   && currentState.waterLvl < MIN_WATER_LVL)
   {
-    lcdShowPopup("Fill the water tank!");
+    lcdShowPopup("Fill the water tank");
     return false;
   }
 
@@ -867,7 +867,7 @@ static inline void sysHealthCheck(float pressureThreshold) {
           break;
         default:
           sensorsRead();
-          lcdShowPopup("Releasing pressure!");
+          lcdShowPopup("Releasing pressure");
           setPumpOff();
           setBoilerOff();
           setSteamValveRelayOff();
@@ -887,7 +887,7 @@ static inline void sysHealthCheck(float pressureThreshold) {
     if (millis() >= systemHealthTimer - 3500ul && millis() <= systemHealthTimer - 500ul) {
       char tmp[25];
       int countdown = (int)(systemHealthTimer-millis())/1000;
-      unsigned int check = snprintf(tmp, sizeof(tmp), "Dropping beats in: %i", countdown);
+      unsigned int check = snprintf(tmp, sizeof(tmp), "Flushing in: %i", countdown);
       if (check > 0 && check <= sizeof(tmp)) {
         lcdShowPopup(tmp);
       }

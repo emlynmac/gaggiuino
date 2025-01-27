@@ -18,7 +18,7 @@ enum class NextionPage: byte {
   /* 07 */ SettingsBoiler,
   /* 08 */ SettingsSystem,
   /* 09 */ BrewGraph,
-  /* 0A */ BrewMore,
+  /* 0A */ BrewMore,  // NO LONGER USED - part of SettingsSystem
   /* 0B */ ShotSettings,
   /* 0C */ BrewTransitionProfile,
   /* 0D */ GraphPreview,

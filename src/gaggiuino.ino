@@ -422,7 +422,7 @@ void lcdSwitchActiveToStoredProfile(const eepromValues_t & storedSettings) {
   lcdUploadProfile(runningCfg);
 }
 
-// Save the desired temp values to EEPROM
+// Save the page settings to EEPROM
 void lcdSaveSettingsTrigger(void) {
   LOG_VERBOSE("Saving values to EEPROM");
 

@@ -401,13 +401,6 @@ void lcdFetchCurrentProfile(eepromValues_t & settings) {
   lcdFetchTemp(*profile);
 }
 
-void lcdFetchBrewSettings(eepromValues_t &settings) {
-  // More brew settings
-  settings.homeOnShotFinish               = myNex.readNumber("bckHome");
-  settings.basketPrefill                  = myNex.readNumber("basketPrefill");
-  settings.brewDeltaState                 = myNex.readNumber("deltaState");
-}
-
 void lcdFetchBoiler(eepromValues_t &settings) {
   settings.steamSetPoint                  = myNex.readNumber("sT.steamSetPoint.val");
   settings.offsetTemp                     = myNex.readNumber("sT.offSet.val");
@@ -424,6 +417,11 @@ void lcdFetchSystem(eepromValues_t &settings) {
   settings.scalesF2                       = myNex.readNumber("sP.lc2.val");
   settings.pumpFlowAtZero                 = myNex.readNumber("sP.pump_zero.val") / 10000.f;
   settings.tankLed                        = myNex.readNumber("sP.h1.val");
+  
+  // These are global vars
+  settings.homeOnShotFinish               = myNex.readNumber("bckHome");
+  settings.basketPrefill                  = myNex.readNumber("basketPrefill");
+  settings.brewDeltaState                 = myNex.readNumber("deltaState");
 }
 
 void lcdFetchLed(eepromValues_t &settings) {
@@ -435,7 +433,7 @@ void lcdFetchLed(eepromValues_t &settings) {
 void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile) {
   switch (page) {
     case NextionPage::BrewMore:
-      lcdFetchBrewSettings(settings);
+      // NO LONGER USED - switches migrated to SettingsSystem
       break;
     case NextionPage::BrewPreinfusion:
       lcdFetchPreinfusion(settings.profiles[targetProfile]);

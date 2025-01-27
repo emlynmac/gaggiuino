@@ -101,15 +101,15 @@ namespace {
     defaultData.powerLineFrequency = 50;
     defaultData.lcdSleep = 16;
     defaultData.warmupState = false;
-    defaultData.scalesF1 = 3920;
-    defaultData.scalesF2 = 4210;
+    defaultData.scalesF1 = 2642;
+    defaultData.scalesF2 = -2319;
     defaultData.pumpFlowAtZero = 0.2225f;
     defaultData.tankLed = 10;
     defaultData.ledState  = true;
     defaultData.ledDisco  = true;
-    defaultData.ledR = 9;
-    defaultData.ledG = 0;
-    defaultData.ledB = 9;
+    defaultData.ledR = 5;
+    defaultData.ledG = 5;
+    defaultData.ledB = 5;
     defaultData.ledW = 2;
 
     return defaultData;

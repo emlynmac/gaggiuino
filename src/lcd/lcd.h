@@ -6,7 +6,8 @@
 #include "eeprom_data/eeprom_data.h"
 #include "../../lib/Common/system_state.h"
 
-
+// These are NOT a link to the IDs in Nextion; they are defined in code
+// See the 'printh 23 02 50 <xx>' commands in each screen
 enum class NextionPage: byte {
   /* 00 */ Home,
   /* 01 */ BrewPreinfusion,

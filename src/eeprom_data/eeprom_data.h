@@ -124,7 +124,6 @@ struct eepromValues_t {
   uint8_t  ledR;
   uint8_t  ledG;
   uint8_t  ledB;
-  uint8_t  tankLed;
 };
 
 void eepromInit(void);

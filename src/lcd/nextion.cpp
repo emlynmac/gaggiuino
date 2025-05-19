@@ -181,8 +181,6 @@ void lcdUploadCfg(eepromValues_t &eepromCurrentValues) {
   myNex.writeNum("sP.lc2.val", eepromCurrentValues.scalesF2);
   myNex.writeNum("sP.pump_zero.val", eepromCurrentValues.pumpFlowAtZero * 10000.f);
   myNex.writeNum("warmupState", eepromCurrentValues.warmupState);
-  myNex.writeNum("sP.h1.val", eepromCurrentValues.tankLed);
-  
 
   // Led
   myNex.writeNum("ledNum",
@@ -416,7 +414,6 @@ void lcdFetchSystem(eepromValues_t &settings) {
   settings.scalesF1                       = myNex.readNumber("sP.lc1.val");
   settings.scalesF2                       = myNex.readNumber("sP.lc2.val");
   settings.pumpFlowAtZero                 = myNex.readNumber("sP.pump_zero.val") / 10000.f;
-  settings.tankLed                        = myNex.readNumber("sP.h1.val");
   
   // These are global vars
   settings.homeOnShotFinish               = myNex.readNumber("bckHome");

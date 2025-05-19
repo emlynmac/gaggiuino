@@ -91,10 +91,6 @@ void setup(void) {
   pumpInit(runningCfg.powerLineFrequency, runningCfg.pumpFlowAtZero);
   LOG_INFO("Pump init");
 
-  //Tank LED init
-  setTankLed(runningCfg.tankLed);
-  LOG_INFO("Tank LED init");
-
   pageValuesRefresh();
   LOG_INFO("Setup sequence finished");
 

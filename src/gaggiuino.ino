@@ -694,7 +694,7 @@ static void profiling(void) {
     uint32_t timeInShot = millis() - brewingTimer;
     phaseProfiler.updatePhase(timeInShot, currentState);
     CurrentPhase& currentPhase = phaseProfiler.getCurrentPhase();
-    ShotSnapshot shotSnapshot = buildShotSnapshot(timeInShot, currentState, currentPhase);
+    // ShotSnapshot shotSnapshot = buildShotSnapshot(timeInShot, currentState, currentPhase);
     // espCommsSendShotData(shotSnapshot, 100);
 
     if (phaseProfiler.isFinished()) {

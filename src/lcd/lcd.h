@@ -8,22 +8,22 @@
 
 
 enum class NextionPage: byte {
-  /* 00 */ Home,
-  /* 01 */ BrewPreinfusion,
-  /* 02 */ BrewSoak,
-  /* 03 */ BrewProfiling,
-  /* 04 */ BrewManual,
-  /* 05 */ Flush,
-  /* 06 */ Descale,
-  /* 07 */ SettingsBoiler,
-  /* 08 */ SettingsSystem,
-  /* 09 */ BrewGraph,
-  /* 0A */ BrewMore,
-  /* 0B */ ShotSettings,
-  /* 0C */ BrewTransitionProfile,
-  /* 0D */ GraphPreview,
-  /* 0E */ KeyboardNumeric,
-  /* 0F */ Led
+  /* 01 */ Home = 1,
+  /* 02 */ BrewPreinfusion,
+  /* 03 */ BrewSoak,
+  /* 04 */ BrewProfiling,
+  /* 05 */ BrewTransitionProfile,
+  /* 06 */ BrewManual = 6,
+  /* 07 */ Flush,
+  /* 08 */ Descale,
+  /* 09 */ SettingsBoiler,
+  /* 0A */ SettingsSystem,
+  /* 0c */ BrewGraph = 12,
+  /* 0d */ ShotSettings,
+  /* 0e */ GraphPreview,
+  /* 0f */ KeyboardNumeric,
+  /* 10 */ KeyboardAlpha,
+  /* 11 */ Led
 };
 
 extern volatile NextionPage lcdCurrentPageId;

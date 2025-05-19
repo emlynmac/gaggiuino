@@ -9,18 +9,20 @@ volatile NextionPage lcdCurrentPageId;
 volatile NextionPage lcdLastCurrentPageId;
 
 // decode/encode bit packing.
-// format is 000000sd rrrrrrrr gggggggg bbbbbbbb, where s = state, d = disco, r/g/b = colors
-void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, uint8_t &g, uint8_t &b) {
+// format is wwwwwwsd rrrrrrrr gggggggg bbbbbbbb, where s = state, d = disco, r/g/b/w = colors
+void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &w) {
   state = (code & 0x02000000);
   disco = (code & 0x01000000);
+  w     = (code & 0xFC000000) >> 24;
   r     = (code & 0x00FF0000) >> 16;
   g     = (code & 0x0000FF00) >> 8;
   b     = (code & 0x000000FF);
 }
 
-uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b) {
-  uint32_t code;
-  code = state ? 0x01 : 0x00;
+uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  uint32_t code = 0;
+  code = code | (w & 0xFC);
+  code = (code >> 1) | (state ? 0x01 : 0x00);
   code = (code << 1) | (disco ? 0x01 : 0x00);
   code = (code << 8) | (r & 0xFF);
   code = (code << 8) | (g & 0xFF);
@@ -187,7 +189,8 @@ void lcdUploadCfg(eepromValues_t &eepromCurrentValues) {
       eepromCurrentValues.ledDisco,
       eepromCurrentValues.ledR,
       eepromCurrentValues.ledG,
-      eepromCurrentValues.ledB
+      eepromCurrentValues.ledB,
+      eepromCurrentValues.ledW
     )
   );
 
@@ -396,13 +399,6 @@ void lcdFetchCurrentProfile(eepromValues_t & settings) {
   lcdFetchTemp(*profile);
 }
 
-void lcdFetchBrewSettings(eepromValues_t &settings) {
-  // More brew settings
-  settings.homeOnShotFinish               = myNex.readNumber("bckHome");
-  settings.basketPrefill                  = myNex.readNumber("basketPrefill");
-  settings.brewDeltaState                 = myNex.readNumber("deltaState");
-}
-
 void lcdFetchBoiler(eepromValues_t &settings) {
   settings.steamSetPoint                  = myNex.readNumber("sT.steamSetPoint.val");
   settings.offsetTemp                     = myNex.readNumber("sT.offSet.val");
@@ -418,19 +414,21 @@ void lcdFetchSystem(eepromValues_t &settings) {
   settings.scalesF1                       = myNex.readNumber("sP.lc1.val");
   settings.scalesF2                       = myNex.readNumber("sP.lc2.val");
   settings.pumpFlowAtZero                 = myNex.readNumber("sP.pump_zero.val") / 10000.f;
+  
+  // These are global vars
+  settings.homeOnShotFinish               = myNex.readNumber("bckHome");
+  settings.basketPrefill                  = myNex.readNumber("basketPrefill");
+  settings.brewDeltaState                 = myNex.readNumber("deltaState");
 }
 
 void lcdFetchLed(eepromValues_t &settings) {
   // Led Settings
   uint32_t ledNum = myNex.readNumber("ledNum");
-  lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledR, settings.ledG, settings.ledB);
+  lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledR, settings.ledG, settings.ledB, settings.ledW);
 }
 
 void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile) {
   switch (page) {
-    case NextionPage::BrewMore:
-      lcdFetchBrewSettings(settings);
-      break;
     case NextionPage::BrewPreinfusion:
       lcdFetchPreinfusion(settings.profiles[targetProfile]);
       break;

@@ -20,7 +20,7 @@ void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, u
 }
 
 uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  uint32_t code;
+  uint32_t code = 0;
   code = code | (w & 0xFC);
   code = (code >> 1) | (state ? 0x01 : 0x00);
   code = (code << 1) | (disco ? 0x01 : 0x00);
@@ -187,10 +187,10 @@ void lcdUploadCfg(eepromValues_t &eepromCurrentValues) {
     lcdEncodeLedSettings(
       eepromCurrentValues.ledState,
       eepromCurrentValues.ledDisco,
-      eepromCurrentValues.ledW,
       eepromCurrentValues.ledR,
       eepromCurrentValues.ledG,
-      eepromCurrentValues.ledB
+      eepromCurrentValues.ledB,
+      eepromCurrentValues.ledW
     )
   );
 

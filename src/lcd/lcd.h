@@ -80,6 +80,5 @@ void lcdQuickProfileSwitch(void);
 void lcdSaveProfileTrigger(void);
 void lcdResetSettingsTrigger(void);
 void lcdLoadDefaultProfileTrigger(void);
-void lcdLedBrightnessTrigger(void);
 
 #endif

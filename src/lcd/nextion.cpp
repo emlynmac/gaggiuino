@@ -503,10 +503,6 @@ int lcdGetDescaleCycle(void) {
   return myNex.readNumber("j0.val");
 }
 
-int getTankLed(void){
-  return myNex.readNumber("sP.h1.val");
-}
-
 void lcdSetDescaleCycle(int cycle) {
   myNex.writeNum("j0.val", cycle);
 }
@@ -586,4 +582,3 @@ void trigger7(void) { lcdQuickProfileSwitch(); }
 void trigger8(void) { lcdSaveProfileTrigger(); }
 void trigger9(void) { lcdResetSettingsTrigger(); }
 void trigger10(void) { lcdLoadDefaultProfileTrigger(); }
-void trigger50(void) { lcdLedBrightnessTrigger(); }

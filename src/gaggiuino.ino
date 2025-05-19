@@ -496,16 +496,6 @@ void lcdQuickProfileSwitch(void) {
   lcdShowPopup("Profile switched!");
 }
 
-void lcdLedBrightnessTrigger(void) {
-  uint8_t newTankLed = getTankLed();
-  setTankLed(newTankLed);
-}
-
-void setTankLed(uint8_t newTankLed) {
-  analogWrite(ledPin, newTankLed);
-}
-
-
 //#############################################################################################
 //###############################____PROFILING_CONTROL____#####################################
 //#############################################################################################

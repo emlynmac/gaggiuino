@@ -58,7 +58,7 @@ void setup(void) {
 #endif
 
   // Initialise comms library for talking to the ESP mcu
-  espCommsInit();
+  // espCommsInit();
 
   // Initialize LED
   led.begin();
@@ -114,7 +114,7 @@ void loop(void) {
   brewDetect();
   modeSelect();
   lcdRefresh();
-  espCommsSendSensorData(currentState);
+  // espCommsSendSensorData(currentState);
   sysHealthCheck(SYS_PRESSURE_IDLE);
 }
 
@@ -125,7 +125,7 @@ void loop(void) {
 
 static void sensorsRead(void) {
   sensorReadSwitches();
-  espCommsReadData();
+  // espCommsReadData();
   sensorsReadTemperature();
   sensorsReadWeight();
   sensorsReadPressure();
@@ -695,7 +695,7 @@ static void profiling(void) {
     phaseProfiler.updatePhase(timeInShot, currentState);
     CurrentPhase& currentPhase = phaseProfiler.getCurrentPhase();
     ShotSnapshot shotSnapshot = buildShotSnapshot(timeInShot, currentState, currentPhase);
-    espCommsSendShotData(shotSnapshot, 100);
+    // espCommsSendShotData(shotSnapshot, 100);
 
     if (phaseProfiler.isFinished()) {
       setPumpOff();

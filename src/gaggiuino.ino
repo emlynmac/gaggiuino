@@ -86,6 +86,7 @@ void setup(void) {
   // Scales handling
   scalesInit(runningCfg.scalesF1, runningCfg.scalesF2);
   LOG_INFO("Scales init");
+  homeScreenScalesEnabled = scalesIsPresent();
 
   // Pump init
   pumpInit(runningCfg.powerLineFrequency, runningCfg.pumpFlowAtZero);
@@ -263,7 +264,9 @@ static void pageValuesRefresh() {
   // Finally read the page we left, as it could've been changed in place (e.g. boolean toggles)
   else lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
 
-  homeScreenScalesEnabled = lcdGetHomeScreenScalesEnabled();
+  // Always have scales enabled if there is scales present
+  homeScreenScalesEnabled = currentState.scalesPresent; // lcdGetHomeScreenScalesEnabled();
+
   // MODE_SELECT should always be LAST
   selectedOperationalMode = (OPERATION_MODES) lcdGetSelectedOperationalMode();
 
@@ -365,7 +368,7 @@ static void lcdRefresh(void) {
         lcdSetTemperatureDecimal(tempDecimal);
         // water lvl
         lcdSetTankWaterLvl(currentState.waterLvl);
-        //weight
+        // weight display
         if (homeScreenScalesEnabled) lcdSetWeight(currentState.weight);
         break;
       case NextionPage::BrewGraph:

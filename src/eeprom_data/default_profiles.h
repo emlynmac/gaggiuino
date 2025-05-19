@@ -8,6 +8,7 @@
 namespace {
   typedef struct {
     char     name[24];
+    // Pre-infusion
     bool     preinfusionState;
     bool     preinfusionFlowState;
     uint16_t preinfusionSec;
@@ -19,6 +20,7 @@ namespace {
     float    preinfusionFilled;
     bool     preinfusionPressureAbove;
     float    preinfusionWeightAbove;
+    // Soak
     bool     soakState;
     uint16_t soakTimePressure;
     uint16_t soakTimeFlow;
@@ -29,6 +31,7 @@ namespace {
     float    soakAboveWeight;
     uint16_t preinfusionRamp;
     uint16_t preinfusionRampSlope;
+    // Transition Profiling
     bool     tpState;
     bool     tpType;
     float    tpProfilingStart;
@@ -45,6 +48,7 @@ namespace {
     uint16_t tfProfileSlope;
     uint16_t tfProfileSlopeShape;
     float    tfProfilingPressureRestriction;
+    // Profiling
     bool     profilingState;
     bool     mfProfileState;
     float    mpProfilingStart;
@@ -92,12 +96,12 @@ namespace {
       /*other*/ 95, true, 18.f, 0.f, 2
     },  // profile 2
     {
-      "Filter 2.1",
-      /*pi*/true, true, 0, 0.f, 4.f, 15, 1.f, 0.f, 600, true, 0.f,
-      /*sk*/true, 0, 90, 0.f, 0.2f, 0.f, 0.f, 45.f, 0, 0,
-      /*tp*/true, true, 0.f, 0.f, 0, 0.f, 0, 0, 0.f, 0.2f, 3.f, 0, 0.f, 10, 0, 9.f,
-      /*pf*/true, true, 0.f, 0.f, 0, 0, 0.f, 3.f, 3.f, 5, 0, 9.f,
-      /*other*/ 89, true, 18.f, 0.f, 2
+      "Decaf 19g",
+      /*pi*/true, true, 10, 2.f, 3.f, 20, 4.f, 3.f, 600, true, 4.f,
+      /*sk*/true, 7, 30, 0.f, 0.f, 2.f, 0.f, 4.f, 5, 2,
+      /*tp*/true, false, 7.5f, 6.f, 0, 3.f, 4, 0, 3.f, 0.f, 0.f, 0, 0.f, 0, 0, 0.f,
+      /*pf*/true, true, 0.f, 0.f, 0, 0, 0.f, 2.5f, 1.f, 15, 0, 6.f,
+      /*other*/ 91, true, 19.f, 42.f, 2
     },  // profile 3
     {
       "Blooming espresso",

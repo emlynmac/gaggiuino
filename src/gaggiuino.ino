@@ -57,12 +57,9 @@ void setup(void) {
   LOG_INFO("DBG init");
 #endif
 
-  // Initialise comms library for talking to the ESP mcu
-  espCommsInit();
-
   // Initialize LED
   led.begin();
-  led.setColor(9u, 0u, 9u); // WHITE
+  led.setColor(9u, 0u, 9u, 0u); // WHITE
   // Init the tof sensor
   tof.init(currentState);
 
@@ -95,7 +92,7 @@ void setup(void) {
   LOG_INFO("Setup sequence finished");
 
   // Change LED colour on setup exit.
-  led.setColor(9u, 0u, 9u); // 64171
+  led.setColor(9u, 0u, 9u, 0u); // 64171
 
   iwdcInit();
 }
@@ -114,7 +111,6 @@ void loop(void) {
   brewDetect();
   modeSelect();
   lcdRefresh();
-  espCommsSendSensorData(currentState);
   sysHealthCheck(SYS_PRESSURE_IDLE);
 }
 
@@ -125,7 +121,6 @@ void loop(void) {
 
 static void sensorsRead(void) {
   sensorReadSwitches();
-  espCommsReadData();
   sensorsReadTemperature();
   sensorsReadWeight();
   sensorsReadPressure();
@@ -257,11 +252,17 @@ static void readTankWaterLevel(void) {
 //##############################################################################################################################
 static void pageValuesRefresh() {
   // Read the page we're landing in: leaving keyboard page means a value could've changed in it
-  if (lcdLastCurrentPageId == NextionPage::KeyboardNumeric) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  if (lcdLastCurrentPageId == NextionPage::KeyboardNumeric) {
+    lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  }
   // Or maybe it's a page that needs constant polling
-  else if (lcdLastCurrentPageId == NextionPage::Led) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  else if (lcdLastCurrentPageId == NextionPage::Led) {
+    lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  }
   // Finally read the page we left, as it could've been changed in place (e.g. boolean toggles)
-  else lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
+  else {
+    lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
+  }
 
   homeScreenScalesEnabled = lcdGetHomeScreenScalesEnabled();
   // MODE_SELECT should always be LAST
@@ -366,7 +367,9 @@ static void lcdRefresh(void) {
         // water lvl
         lcdSetTankWaterLvl(currentState.waterLvl);
         //weight
-        if (homeScreenScalesEnabled) lcdSetWeight(currentState.weight);
+        if (homeScreenScalesEnabled) {
+          lcdSetWeight(currentState.weight);
+        }
         break;
       case NextionPage::BrewGraph:
       case NextionPage::BrewManual:
@@ -374,7 +377,9 @@ static void lcdRefresh(void) {
         tempDecimal = (currentState.waterTemperature - (uint16_t)currentState.waterTemperature) * 10;
         lcdSetTemperatureDecimal(tempDecimal);
         // If the weight output is a negative value lower than -0.8 you might want to tare again before extraction starts.
-        if (currentState.shotWeight) lcdSetWeight(currentState.shotWeight > -0.8f ? currentState.shotWeight : -0.9f);
+        if (currentState.shotWeight) {
+          lcdSetWeight(currentState.shotWeight > -0.8f ? currentState.shotWeight : -0.9f);
+        }
         /*LCD flow output*/
         lcdSetFlow( currentState.smoothedPumpFlow * 10.f);
         break;
@@ -418,7 +423,7 @@ void lcdSwitchActiveToStoredProfile(const eepromValues_t & storedSettings) {
   lcdUploadProfile(runningCfg);
 }
 
-// Save the desired temp values to EEPROM
+// Save the page settings to EEPROM
 void lcdSaveSettingsTrigger(void) {
   LOG_VERBOSE("Saving values to EEPROM");
 
@@ -447,7 +452,9 @@ void lcdLoadDefaultProfileTrigger(void) {
 
 void lcdScalesTareTrigger(void) {
   LOG_VERBOSE("Tare scales");
-  if (currentState.scalesPresent) currentState.tarePending = true;
+  if (currentState.scalesPresent)  {
+    currentState.tarePending = true;
+  }
 }
 
 void lcdHomeScreenScalesTrigger(void) {
@@ -694,8 +701,6 @@ static void profiling(void) {
     uint32_t timeInShot = millis() - brewingTimer;
     phaseProfiler.updatePhase(timeInShot, currentState);
     CurrentPhase& currentPhase = phaseProfiler.getCurrentPhase();
-    ShotSnapshot shotSnapshot = buildShotSnapshot(timeInShot, currentState, currentPhase);
-    espCommsSendShotData(shotSnapshot, 100);
 
     if (phaseProfiler.isFinished()) {
       setPumpOff();
@@ -873,7 +878,7 @@ static inline void sysHealthCheck(float pressureThreshold) {
     if (millis() >= systemHealthTimer - 3500ul && millis() <= systemHealthTimer - 500ul) {
       char tmp[25];
       int countdown = (int)(systemHealthTimer-millis())/1000;
-      unsigned int check = snprintf(tmp, sizeof(tmp), "Dropping beats in: %i", countdown);
+      unsigned int check = snprintf(tmp, sizeof(tmp), "Flushing in: %i", countdown);
       if (check > 0 && check <= sizeof(tmp)) {
         lcdShowPopup(tmp);
       }
@@ -980,7 +985,7 @@ static void doLed(void) {
         led.setDisco(led.DESCALE);
         break;
       default:
-        led.setColor(0, 0, 0);
+        led.setColor(0, 0, 0, 0);
         break;
     }
   } else {
@@ -992,7 +997,7 @@ static void doLed(void) {
           lcdFetchLed(runningCfg);
         }
       default: // intentionally fall through
-        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB);
+        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB, runningCfg.ledW);
     }
   }
 }

@@ -2,7 +2,6 @@
 #define REMOTE_SCALE_H
 
 #include "remote_scales.h"
-#include "esp_comms.h"
 
 bool remoteScalesPresent = false;
 float remoteScalesLatestWeight = 0.f;
@@ -16,7 +15,6 @@ void remoteScalesTare(void) {
     return;
   }
 
-  espCommsSendTareScalesCommand();
   lastRemoteScalesTare = millis();
 }
 

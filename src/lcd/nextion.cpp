@@ -491,10 +491,6 @@ int lcdGetManualFlowVol(void) {
   return myNex.readNumber("h0.val");
 }
 
-int lcdGetHomeScreenScalesEnabled(void) {
-  return myNex.readNumber("scEn.val");
-}
-
 int lcdGetSelectedOperationalMode(void) {
   return  myNex.readNumber("modeSelect");
 }
@@ -575,7 +571,7 @@ void lcdWarmupStateStop(void) {
 
 void trigger1(void) { lcdSaveSettingsTrigger(); }
 void trigger2(void) { lcdScalesTareTrigger(); }
-void trigger3(void) { lcdHomeScreenScalesTrigger(); }
+// void trigger3(void) { lcdHomeScreenScalesTrigger(); }
 void trigger4(void) { lcdBrewGraphScalesTareTrigger(); }
 void trigger6(void) { lcdRefreshElementsTrigger(); }
 void trigger7(void) { lcdQuickProfileSwitch(); }

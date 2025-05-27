@@ -258,11 +258,20 @@ static void readTankWaterLevel(void) {
 //##############################################################################################################################
 static void pageValuesRefresh() {
   // Read the page we're landing in: leaving keyboard page means a value could've changed in it
-  if (lcdLastCurrentPageId == NextionPage::KeyboardNumeric) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  if (lcdLastCurrentPageId == NextionPage::KeyboardNumeric)
+  {
+    lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  }
   // Or maybe it's a page that needs constant polling
-  else if (lcdLastCurrentPageId == NextionPage::Led) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  else if (lcdLastCurrentPageId == NextionPage::Led)
+  {
+    lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  }
   // Finally read the page we left, as it could've been changed in place (e.g. boolean toggles)
-  else lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
+  else
+  {
+    lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
+  }
 
   // Always have scales enabled if there is scales present
   homeScreenScalesEnabled = currentState.scalesPresent; // lcdGetHomeScreenScalesEnabled();
@@ -281,54 +290,62 @@ static void pageValuesRefresh() {
 static void modeSelect(void) {
   if (!systemState.startupInitFinished) return;
 
-  switch (selectedOperationalMode) {
-    //REPLACE ALL THE BELOW WITH OPMODE_auto_profiling
-    case OPERATION_MODES::OPMODE_straight9Bar:
-    case OPERATION_MODES::OPMODE_justPreinfusion:
-    case OPERATION_MODES::OPMODE_justPressureProfile:
-    case OPERATION_MODES::OPMODE_preinfusionAndPressureProfile:
-    case OPERATION_MODES::OPMODE_flowPreinfusionStraight9BarProfiling:
-    case OPERATION_MODES::OPMODE_justFlowBasedProfiling:
-    case OPERATION_MODES::OPMODE_FlowBasedPreinfusionPressureBasedProfiling:
-    case OPERATION_MODES::OPMODE_everythingFlowProfiled:
-    case OPERATION_MODES::OPMODE_pressureBasedPreinfusionAndFlowProfile:
-      nonBrewModeActive = false;
-      if (currentState.hotWaterSwitchState) hotWaterMode(currentState);
-      else if (currentState.steamSwitchState) steamCtrl(runningCfg, currentState);
-      else {
-        profiling();
-        steamTime = millis();
-      }
-      break;
-    case OPERATION_MODES::OPMODE_manual:
-      nonBrewModeActive = false;
-      if (!currentState.steamSwitchState) steamTime = millis();
-      manualFlowControl();
-      break;
-    case OPERATION_MODES::OPMODE_flush:
-      nonBrewModeActive = true;
-      if (!currentState.steamSwitchState) steamTime = millis();
-      backFlush(currentState);
-      brewActive ? setBoilerOff() : justDoCoffee(runningCfg, currentState, false);
-      break;
-    case OPERATION_MODES::OPMODE_steam:
-      nonBrewModeActive = true;
+  switch (selectedOperationalMode)
+  {
+  case OPERATION_MODES::OPMODE_straight9Bar:
+  case OPERATION_MODES::OPMODE_justPreinfusion:
+  case OPERATION_MODES::OPMODE_justPressureProfile:
+  case OPERATION_MODES::OPMODE_preinfusionAndPressureProfile:
+  case OPERATION_MODES::OPMODE_flowPreinfusionStraight9BarProfiling:
+  case OPERATION_MODES::OPMODE_justFlowBasedProfiling:
+  case OPERATION_MODES::OPMODE_FlowBasedPreinfusionPressureBasedProfiling:
+  case OPERATION_MODES::OPMODE_everythingFlowProfiled:
+  case OPERATION_MODES::OPMODE_pressureBasedPreinfusionAndFlowProfile:
+    nonBrewModeActive = false;
+    if (currentState.hotWaterSwitchState)
+      hotWaterMode(currentState);
+    else if (currentState.steamSwitchState)
       steamCtrl(runningCfg, currentState);
+    else
+    {
+      profiling();
+      steamTime = millis();
+    }
+    break;
+  case OPERATION_MODES::OPMODE_manual:
+    nonBrewModeActive = false;
+    if (!currentState.steamSwitchState)
+      steamTime = millis();
+    manualFlowControl();
+    break;
+  case OPERATION_MODES::OPMODE_flush:
+    nonBrewModeActive = true;
+    if (!currentState.steamSwitchState)
+      steamTime = millis();
+    backFlush(currentState);
+    brewActive ? setBoilerOff() : justDoCoffee(runningCfg, currentState, false);
+    break;
+  case OPERATION_MODES::OPMODE_steam:
+    nonBrewModeActive = true;
+    steamCtrl(runningCfg, currentState);
 
-      if (!currentState.steamSwitchState) {
-        brewActive ? flushActivated() : flushDeactivated();
-        steamCtrl(runningCfg, currentState);
-        pageValuesRefresh();
-      }
-      break;
-    case OPERATION_MODES::OPMODE_descale:
-      nonBrewModeActive = true;
-      if (!currentState.steamSwitchState) steamTime = millis();
-      deScale(runningCfg, currentState);
-      break;
-    default:
+    if (!currentState.steamSwitchState)
+    {
+      brewActive ? flushActivated() : flushDeactivated();
+      steamCtrl(runningCfg, currentState);
       pageValuesRefresh();
-      break;
+    }
+    break;
+  case OPERATION_MODES::OPMODE_descale:
+    nonBrewModeActive = true;
+    if (!currentState.steamSwitchState)
+      steamTime = millis();
+    deScale(runningCfg, currentState);
+    break;
+
+  default:
+    pageValuesRefresh();
+    break;
   }
 }
 
@@ -369,7 +386,10 @@ static void lcdRefresh(void) {
         // water lvl
         lcdSetTankWaterLvl(currentState.waterLvl);
         // weight display
-        if (homeScreenScalesEnabled) lcdSetWeight(currentState.weight);
+        if (homeScreenScalesEnabled)
+        {
+          lcdSetWeight(currentState.weight);
+        }
         break;
       case NextionPage::BrewGraph:
       case NextionPage::BrewManual:
@@ -450,12 +470,10 @@ void lcdLoadDefaultProfileTrigger(void) {
 
 void lcdScalesTareTrigger(void) {
   LOG_VERBOSE("Tare scales");
-  if (currentState.scalesPresent) currentState.tarePending = true;
-}
-
-void lcdHomeScreenScalesTrigger(void) {
-  LOG_VERBOSE("Scales enabled or disabled");
-  homeScreenScalesEnabled = lcdGetHomeScreenScalesEnabled();
+  if (currentState.scalesPresent)
+  {
+    currentState.tarePending = true;
+  }
 }
 
 void lcdBrewGraphScalesTareTrigger(void) {
@@ -463,7 +481,8 @@ void lcdBrewGraphScalesTareTrigger(void) {
   if (currentState.scalesPresent) {
     currentState.tarePending = true;
   }
-  else {
+  else
+  {
     currentState.shotWeight = 0.f;
     predictiveWeight.setIsForceStarted(true);
   }
@@ -995,7 +1014,15 @@ static void doLed(void) {
           lcdFetchLed(runningCfg);
         }
       default: // intentionally fall through
-        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB, runningCfg.ledW);
+        if (runningCfg.ledState)
+        {
+          led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB, runningCfg.ledW);
+        }
+        else
+        {
+          // LED SHOULD BE OFF
+          led.setColor(0, 0, 0, 0);
+        }
     }
   }
 }

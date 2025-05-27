@@ -46,7 +46,6 @@ uint8_t lcdGetSelectedProfile(void);
 bool lcdGetPreinfusionFlowState(void);
 bool lcdGetProfileFlowState(void);
 bool lcdGetTransitionFlowState(void);
-int lcdGetHomeScreenScalesEnabled(void);
 int lcdGetSelectedOperationalMode(void);
 int lcdGetManualFlowVol(void);
 int lcdGetDescaleCycle(void);
@@ -73,7 +72,7 @@ void lcdWarmupStateStop(void);
 /* Triggers */
 void lcdSaveSettingsTrigger(void);
 void lcdScalesTareTrigger(void);
-void lcdHomeScreenScalesTrigger(void);
+// void lcdHomeScreenScalesTrigger(void);
 void lcdBrewGraphScalesTareTrigger(void);
 void lcdRefreshElementsTrigger(void);
 void lcdQuickProfileSwitch(void);

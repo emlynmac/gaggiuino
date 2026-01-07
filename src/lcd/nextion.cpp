@@ -9,19 +9,20 @@ volatile NextionPage lcdCurrentPageId;
 volatile NextionPage lcdLastCurrentPageId;
 
 // decode/encode bit packing.
+// ONLY 6 bits for white channel!
 // format is wwwwwwsd rrrrrrrr gggggggg bbbbbbbb, where s = state, d = disco, r/g/b/w = colors
 void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &w) {
   state = (code & 0x02000000);
   disco = (code & 0x01000000);
-  w     = (code & 0xFC000000) >> 24;
-  r     = (code & 0x00FF0000) >> 16;
-  g     = (code & 0x0000FF00) >> 8;
-  b     = (code & 0x000000FF);
+  w = (code & 0xFC000000) >> 26;
+  r = (code & 0x00FF0000) >> 16;
+  g = (code & 0x0000FF00) >> 8;
+  b = (code & 0x000000FF);
 }
 
 uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   uint32_t code = 0;
-  code = code | (w & 0xFC);
+  code = code | ((w << 2) & 0xFC);
   code = (code >> 1) | (state ? 0x01 : 0x00);
   code = (code << 1) | (disco ? 0x01 : 0x00);
   code = (code << 8) | (r & 0xFF);
